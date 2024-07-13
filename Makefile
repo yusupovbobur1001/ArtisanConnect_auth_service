@@ -43,5 +43,3 @@ mig-force:
 # `gen-proto.sh` skriptiga ruxsat beradi
 permission:
 	chmod +x scripts/gen-proto.sh
-
-
