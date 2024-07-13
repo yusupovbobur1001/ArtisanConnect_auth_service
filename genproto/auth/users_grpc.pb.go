@@ -22,10 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
-	Register(ctx context.Context, in *User, opts ...grpc.CallOption) (*UserInfo, error)
-	Login(ctx context.Context, in *UserLogin, opts ...grpc.CallOption) (*Tokens, error)
-	Loguot(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Message, error)
-	UpdateProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*GetProfile, error)
+	UpdateProfile(ctx context.Context, in *UserUpdate, opts ...grpc.CallOption) (*GetProfile, error)
 	DeleteProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Message, error)
 	GetByIdProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*UserInfo, error)
 	GetAllProfil(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*UsersInfo, error)
@@ -43,34 +40,7 @@ func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
 	return &authClient{cc}
 }
 
-func (c *authClient) Register(ctx context.Context, in *User, opts ...grpc.CallOption) (*UserInfo, error) {
-	out := new(UserInfo)
-	err := c.cc.Invoke(ctx, "/auth.Auth/Register", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authClient) Login(ctx context.Context, in *UserLogin, opts ...grpc.CallOption) (*Tokens, error) {
-	out := new(Tokens)
-	err := c.cc.Invoke(ctx, "/auth.Auth/Login", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authClient) Loguot(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Message, error) {
-	out := new(Message)
-	err := c.cc.Invoke(ctx, "/auth.Auth/Loguot", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authClient) UpdateProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*GetProfile, error) {
+func (c *authClient) UpdateProfile(ctx context.Context, in *UserUpdate, opts ...grpc.CallOption) (*GetProfile, error) {
 	out := new(GetProfile)
 	err := c.cc.Invoke(ctx, "/auth.Auth/UpdateProfile", in, out, opts...)
 	if err != nil {
@@ -146,10 +116,7 @@ func (c *authClient) ValidateUserId(ctx context.Context, in *Id, opts ...grpc.Ca
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility
 type AuthServer interface {
-	Register(context.Context, *User) (*UserInfo, error)
-	Login(context.Context, *UserLogin) (*Tokens, error)
-	Loguot(context.Context, *Id) (*Message, error)
-	UpdateProfile(context.Context, *Id) (*GetProfile, error)
+	UpdateProfile(context.Context, *UserUpdate) (*GetProfile, error)
 	DeleteProfile(context.Context, *Id) (*Message, error)
 	GetByIdProfile(context.Context, *Id) (*UserInfo, error)
 	GetAllProfil(context.Context, *Filter) (*UsersInfo, error)
@@ -164,16 +131,7 @@ type AuthServer interface {
 type UnimplementedAuthServer struct {
 }
 
-func (UnimplementedAuthServer) Register(context.Context, *User) (*UserInfo, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
-}
-func (UnimplementedAuthServer) Login(context.Context, *UserLogin) (*Tokens, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
-}
-func (UnimplementedAuthServer) Loguot(context.Context, *Id) (*Message, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Loguot not implemented")
-}
-func (UnimplementedAuthServer) UpdateProfile(context.Context, *Id) (*GetProfile, error) {
+func (UnimplementedAuthServer) UpdateProfile(context.Context, *UserUpdate) (*GetProfile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateProfile not implemented")
 }
 func (UnimplementedAuthServer) DeleteProfile(context.Context, *Id) (*Message, error) {
@@ -210,62 +168,8 @@ func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
 	s.RegisterService(&Auth_ServiceDesc, srv)
 }
 
-func _Auth_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(User)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).Register(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.Auth/Register",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Register(ctx, req.(*User))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Auth_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserLogin)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).Login(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.Auth/Login",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Login(ctx, req.(*UserLogin))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Auth_Loguot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Id)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).Loguot(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.Auth/Loguot",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Loguot(ctx, req.(*Id))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Auth_UpdateProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Id)
+	in := new(UserUpdate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -277,7 +181,7 @@ func _Auth_UpdateProfile_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/auth.Auth/UpdateProfile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).UpdateProfile(ctx, req.(*Id))
+		return srv.(AuthServer).UpdateProfile(ctx, req.(*UserUpdate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -415,18 +319,6 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "auth.Auth",
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Register",
-			Handler:    _Auth_Register_Handler,
-		},
-		{
-			MethodName: "Login",
-			Handler:    _Auth_Login_Handler,
-		},
-		{
-			MethodName: "Loguot",
-			Handler:    _Auth_Loguot_Handler,
-		},
 		{
 			MethodName: "UpdateProfile",
 			Handler:    _Auth_UpdateProfile_Handler,
