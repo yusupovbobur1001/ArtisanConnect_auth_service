@@ -89,7 +89,7 @@ func (u *UserRepo) RefreshToken(refresh string) (bool, error) {
 	return exists, err
 }
 
-func (u *UserRepo) UpdateUser(req *pb.UserUpdate, id string) (*pb.GetProfile, error) {
+func (u *UserRepo) UpdateUser(req *pb.UserUpdate) (*pb.GetProfile, error) {
 	query := `
 		update 
 			users
@@ -102,7 +102,7 @@ func (u *UserRepo) UpdateUser(req *pb.UserUpdate, id string) (*pb.GetProfile, er
 		where 
 			id = $5 `
 
-	_, err := u.Db.Exec(query, req.UserName, req.FullName, req.Bio, req.UserType, id, time.Now())
+	_, err := u.Db.Exec(query, req.UserName, req.FullName, req.Bio, req.UserType, req.Id, time.Now())
 	if err != nil {
 		return nil, err
 	}

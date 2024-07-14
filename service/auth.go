@@ -18,8 +18,21 @@ func NewHadler(db *sql.DB) *Handler {
 }
 
 func (h *Handler) UpdateProfile(ctx context.Context, req *pb.UserUpdate) (*pb.GetProfile, error) {
-	if req.UserType != "verdor" || req.UserType != "receiver" {
-		return nil, fmt.Errorf("UserType biz hohlaganday emas!")
-	}
 	userP, err := h.Auth.UpdateUser(req)
+	if err != nil {
+		return nil, err
+	}
+	return userP, nil
+}
+
+func (h *Handler) DeleteProfile(ctx context.Context, req *pb.Id) (*pb.Message, error) {
+	resp, err := h.Auth.DeleteUser(req)
+	if err != nil {
+		return &pb.Message{Message: "The user was not successfully deleted"}, err
+	}
+	return resp, nil
+}
+
+func (h *Handler) GetByIdProfile(ctx context.Context, req *pb.Id) (*pb.UsersInfo, error) {
+	h.Auth.GetByIdUser(req)
 }
