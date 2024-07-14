@@ -24,11 +24,12 @@ func (u *UserRepo) Register(req *pb.User) error {
 				password,
 				full_name,
 				user_type,
-				bio
-		) values($1, $2, $3, $4, $5, $6)`
+				bio,
+				created_at
+		) values($1, $2, $3, $4, $5, $6, $7)`
 
 	_, err := u.Db.Exec(query, req.UserName, req.Email, req.Password,
-		req.FullName, req.UserType, req.Bio)
+		req.FullName, req.UserType, req.Bio, time.Now())
 
 	if err != nil {
 		return fmt.Errorf("register metod: %v", err)
@@ -55,13 +56,51 @@ func (u *UserRepo) Login(req *pb.UserLogin) (*model.User, error) {
 
 }
 
+func (u *UserRepo) Logout(token *pb.Tokens) error {
+	_, err := u.Db.Exec(`
+	update 
+		reflesh_tokens 
+	set 
+		deleted_at=$1 
+	where 
+		token=$2`, time.Now(), token.RefreshToken)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UserRepo) RefreshToken(refresh string) (bool, error) {
+	query := `
+	select 
+		case 
+			when token = $1 then true 
+		else 
+			false 
+		end 
+	from 
+		refresh_tokens 
+	where 
+		token = $1 and deletad_at is null
+	`
+	exists := false
+	err := u.Db.QueryRow(query, refresh).Scan(&exists)
+
+	return exists, err
+}
+
 func (u *UserRepo) UpdateUser(req *pb.UserUpdate, id string) (*pb.GetProfile, error) {
 	query := `
 		update 
 			users
 		set
-			user_name = $1, full_name = $2, bio = $3, user_type = $4, updated_at = $6
-		where id = $5`
+			user_name = $1, 
+			full_name = $2, 
+			bio = $3, 
+			user_type = $4, 
+			updated_at = $6
+		where 
+			id = $5 `
 
 	_, err := u.Db.Exec(query, req.UserName, req.FullName, req.Bio, req.UserType, id, time.Now())
 	if err != nil {
@@ -95,10 +134,10 @@ func (u *UserRepo) DeleteUser(req *pb.Id) (*pb.Message, error) {
 func (u *UserRepo) GetByIdUser(req *pb.Id) (*pb.GetProfile, error) {
 	user := pb.GetProfile{}
 	query := `
-		serlect 
+		select 
 			user_name, email, password, full_name, id, updated_at, bio
 		from 
-			uesrs
+			users
 		where 
 			id = $1 and deleted_at is null`
 
@@ -113,12 +152,16 @@ func (u *UserRepo) GetByIdUser(req *pb.Id) (*pb.GetProfile, error) {
 func (u *UserRepo) GetAllUser(req *pb.Filter) (*pb.UsersInfo, error) {
 	var params []interface{}
 
-	query := `select
-					id, 
-					user_name, 
-					user_type,
-					full_name
-		from restaurants where  deleted_at is null `
+	query := `
+		select
+				id, 
+				user_name, 
+				user_type,
+				full_name
+		from 
+			users 
+		where  
+			deleted_at is null `
 
 	if req.Limit > 0 {
 		params = append(params, req.Limit)
@@ -153,7 +196,7 @@ func (u *UserRepo) GetAllUser(req *pb.Filter) (*pb.UsersInfo, error) {
 func (u *UserRepo) ValidateUserId(rep *pb.Id) (*pb.Exists, error) {
 	query := `select 
 	            case 
-				    when id = $1 then true 
+				    when id = 7f36e63-0d55-483a-9af0-66c665088872  then true 
 				else 
 				    false 
 				end 

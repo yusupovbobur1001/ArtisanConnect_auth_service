@@ -1,6 +1,6 @@
 # Hozirgi direktoriyani saqlaydi
 CURRENT_DIR := $(shell pwd)
-DATABASE_URL="postgres://postgres:0509@localhost:5432/project?sslmode=disable"
+DATABASE_URL="postgres://postgres:0509@localhost:5432/artisanconnect_aut?sslmode=disable"
 
 # Serverni ishga tushiradi
 runserver:
@@ -43,3 +43,7 @@ mig-force:
 # `gen-proto.sh` skriptiga ruxsat beradi
 permission:
 	chmod +x scripts/gen-proto.sh
+
+# Testlarni ishga tushiradi
+test:
+	@go test ./storage/postgres
