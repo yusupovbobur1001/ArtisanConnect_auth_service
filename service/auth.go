@@ -5,7 +5,6 @@ import (
 	"auth_service/storage/postgres"
 	"context"
 	"database/sql"
-	"fmt"
 )
 
 type Handler struct {
@@ -33,6 +32,32 @@ func (h *Handler) DeleteProfile(ctx context.Context, req *pb.Id) (*pb.Message, e
 	return resp, nil
 }
 
-func (h *Handler) GetByIdProfile(ctx context.Context, req *pb.Id) (*pb.UsersInfo, error) {
-	h.Auth.GetByIdUser(req)
+func (h *Handler) GetByIdProfile(ctx context.Context, req *pb.Id) (*pb.GetProfile, error) {
+	resp, err := h.Auth.GetByIdUser(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
+
+func (h *Handler) GetAllProfil(ctx context.Context, req *pb.Filter) (*pb.UsersInfo, error) {
+	resp, err := h.Auth.GetAllUser(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+
+func (h *Handler) ValidateUserId(ctx context.Context, req *pb.Id) (*pb.Exists, error) {
+	exist, err := h.Auth.ValidateUserId(req)
+	if !exist.Exist || err != nil {
+		return &pb.Exists{Exist: false}, err
+	}
+
+	return &pb.Exists{Exist: true}, nil
+}
+
+

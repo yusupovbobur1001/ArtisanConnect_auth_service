@@ -107,7 +107,7 @@ func (u *UserRepo) UpdateUser(req *pb.UserUpdate) (*pb.GetProfile, error) {
 		return nil, err
 	}
 
-	resp, err := u.GetByIdUser(&pb.Id{Id: id})
+	resp, err := u.GetByIdUser(&pb.Id{Id: req.Id})
 	if err != nil {
 		return nil, err
 	}

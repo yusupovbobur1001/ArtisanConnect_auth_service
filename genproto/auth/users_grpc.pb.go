@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AuthClient interface {
 	UpdateProfile(ctx context.Context, in *UserUpdate, opts ...grpc.CallOption) (*GetProfile, error)
 	DeleteProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Message, error)
-	GetByIdProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*UsersInfo, error)
+	GetByIdProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*GetProfile, error)
 	GetAllProfil(ctx context.Context, in *Filter, opts ...grpc.CallOption) (*UsersInfo, error)
 	ProfileUserType(ctx context.Context, in *UserType, opts ...grpc.CallOption) (*GetProfile, error)
 	UpdateProfilePassword(ctx context.Context, in *RestoreProfile, opts ...grpc.CallOption) (*Message, error)
@@ -58,8 +58,8 @@ func (c *authClient) DeleteProfile(ctx context.Context, in *Id, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *authClient) GetByIdProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*UsersInfo, error) {
-	out := new(UsersInfo)
+func (c *authClient) GetByIdProfile(ctx context.Context, in *Id, opts ...grpc.CallOption) (*GetProfile, error) {
+	out := new(GetProfile)
 	err := c.cc.Invoke(ctx, "/auth.Auth/GetByIdProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -118,7 +118,7 @@ func (c *authClient) ValidateUserId(ctx context.Context, in *Id, opts ...grpc.Ca
 type AuthServer interface {
 	UpdateProfile(context.Context, *UserUpdate) (*GetProfile, error)
 	DeleteProfile(context.Context, *Id) (*Message, error)
-	GetByIdProfile(context.Context, *Id) (*UsersInfo, error)
+	GetByIdProfile(context.Context, *Id) (*GetProfile, error)
 	GetAllProfil(context.Context, *Filter) (*UsersInfo, error)
 	ProfileUserType(context.Context, *UserType) (*GetProfile, error)
 	UpdateProfilePassword(context.Context, *RestoreProfile) (*Message, error)
@@ -137,7 +137,7 @@ func (UnimplementedAuthServer) UpdateProfile(context.Context, *UserUpdate) (*Get
 func (UnimplementedAuthServer) DeleteProfile(context.Context, *Id) (*Message, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProfile not implemented")
 }
-func (UnimplementedAuthServer) GetByIdProfile(context.Context, *Id) (*UsersInfo, error) {
+func (UnimplementedAuthServer) GetByIdProfile(context.Context, *Id) (*GetProfile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByIdProfile not implemented")
 }
 func (UnimplementedAuthServer) GetAllProfil(context.Context, *Filter) (*UsersInfo, error) {
