@@ -25,11 +25,11 @@ func (h *Handler) UpdateProfile(ctx context.Context, req *pb.UserUpdate) (*pb.Ge
 }
 
 func (h *Handler) DeleteProfile(ctx context.Context, req *pb.Id) (*pb.Message, error) {
-	resp, err := h.Auth.DeleteUser(req)
+	_, err := h.Auth.DeleteUser(req)
 	if err != nil {
 		return &pb.Message{Message: "The user was not successfully deleted"}, err
 	}
-	return resp, nil
+	return &pb.Message{Message: "The user was  successfully deleted"}, nil
 }
 
 func (h *Handler) GetByIdProfile(ctx context.Context, req *pb.Id) (*pb.GetProfile, error) {
@@ -50,7 +50,6 @@ func (h *Handler) GetAllProfil(ctx context.Context, req *pb.Filter) (*pb.UsersIn
 	return resp, nil
 }
 
-
 func (h *Handler) ValidateUserId(ctx context.Context, req *pb.Id) (*pb.Exists, error) {
 	exist, err := h.Auth.ValidateUserId(req)
 	if !exist.Exist || err != nil {
@@ -59,5 +58,3 @@ func (h *Handler) ValidateUserId(ctx context.Context, req *pb.Id) (*pb.Exists, e
 
 	return &pb.Exists{Exist: true}, nil
 }
-
-
