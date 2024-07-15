@@ -196,7 +196,7 @@ func (u *UserRepo) GetAllUser(req *pb.Filter) (*pb.UsersInfo, error) {
 func (u *UserRepo) ValidateUserId(rep *pb.Id) (*pb.Exists, error) {
 	query := `select 
 	            case 
-				    when id = 7f36e63-0d55-483a-9af0-66c665088872  then true 
+				    when id = $1  then true 
 				else 
 				    false 
 				end 
@@ -208,3 +208,5 @@ func (u *UserRepo) ValidateUserId(rep *pb.Id) (*pb.Exists, error) {
 	err := u.Db.QueryRow(query, rep.Id).Scan(&res.Exist)
 	return &res, err
 }
+
+
