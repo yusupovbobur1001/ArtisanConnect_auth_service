@@ -30,7 +30,6 @@ type ProductServiceClient interface {
 	SearchProducts(ctx context.Context, in *SearchProductsRequest, opts ...grpc.CallOption) (*SearchProductsResponse, error)
 	AddProductRating(ctx context.Context, in *AddProductRatingRequest, opts ...grpc.CallOption) (*RatingInfo, error)
 	GetProductRatings(ctx context.Context, in *Id, opts ...grpc.CallOption) (*GetProductRatingsResponse, error)
-	ValidateProductId(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Exists, error)
 }
 
 type productServiceClient struct {
@@ -113,15 +112,6 @@ func (c *productServiceClient) GetProductRatings(ctx context.Context, in *Id, op
 	return out, nil
 }
 
-func (c *productServiceClient) ValidateProductId(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Exists, error) {
-	out := new(Exists)
-	err := c.cc.Invoke(ctx, "/products.ProductService/ValidateProductId", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ProductServiceServer is the server API for ProductService service.
 // All implementations must embed UnimplementedProductServiceServer
 // for forward compatibility
@@ -134,7 +124,6 @@ type ProductServiceServer interface {
 	SearchProducts(context.Context, *SearchProductsRequest) (*SearchProductsResponse, error)
 	AddProductRating(context.Context, *AddProductRatingRequest) (*RatingInfo, error)
 	GetProductRatings(context.Context, *Id) (*GetProductRatingsResponse, error)
-	ValidateProductId(context.Context, *Id) (*Exists, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -165,9 +154,6 @@ func (UnimplementedProductServiceServer) AddProductRating(context.Context, *AddP
 }
 func (UnimplementedProductServiceServer) GetProductRatings(context.Context, *Id) (*GetProductRatingsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProductRatings not implemented")
-}
-func (UnimplementedProductServiceServer) ValidateProductId(context.Context, *Id) (*Exists, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidateProductId not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
 
@@ -326,24 +312,6 @@ func _ProductService_GetProductRatings_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProductService_ValidateProductId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Id)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).ValidateProductId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/products.ProductService/ValidateProductId",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).ValidateProductId(ctx, req.(*Id))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // ProductService_ServiceDesc is the grpc.ServiceDesc for ProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -382,10 +350,6 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProductRatings",
 			Handler:    _ProductService_GetProductRatings_Handler,
-		},
-		{
-			MethodName: "ValidateProductId",
-			Handler:    _ProductService_ValidateProductId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -18,7 +18,7 @@ import (
 // @Produce json
 // @Param user body auth.User true "User information to create it"
 // @Success 201
-// @Failure 500 {object} models.Error "Something went wrong in server"
+// @Failure 500 {object} string "Something went wrong in server"
 // @Router /auth/register [post]
 func (h *Handler) Register(c *gin.Context) {
 	user := &pb.User{}
@@ -47,8 +47,8 @@ func (h *Handler) Register(c *gin.Context) {
 // @Produce json
 // @Param user body auth.UserLogin true "User Information to log in"
 // @Success 200 {object} auth.Tokens  "Returns access and refresh tokens"
-// @Failure 401 {object} models.Error "if Access token fails it will returns this"
-// @Failure 500 {object} models.Error "Something went wrong in server"
+// @Failure 401 {object} string "if Access token fails it will returns this"
+// @Failure 500 {object} string "Something went wrong in server"
 // @Router /auth/login [post]
 func (h *Handler) Login(c *gin.Context) {
 	user := pb.UserLogin{}
@@ -84,8 +84,8 @@ func (h *Handler) Login(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 
-// @Failure 401 {object} models.Error "if Access token fails it will returns this"
-// @Failure 500 {object} models.Error "Something went wrong in server"
+// @Failure 401 {object} string "if Access token fails it will returns this"
+// @Failure 500 {object} string "Something went wrong in server"
 // @Router /auth/logout [post]
 func (h *Handler) Logout(c *gin.Context) {
 	tkn := c.GetHeader("Authorization")
@@ -114,8 +114,8 @@ func (h *Handler) Logout(c *gin.Context) {
 // @Tags Auth
 // @ID refresh
 // @Produce json
-// @Success 200 
-// @Failure 500 {object} models.Error "Something went wrong in server"
+// @Success 200  {object} string "if Access token fails it will returns this
+// @Failure 500 {object} string "Something went wrong in server"
 // @Router /auth/refreshtoken [get]
 func (h *Handler) RefreshToken(c *gin.Context) {
 	refreshToken := c.GetHeader("Authorization")
@@ -140,7 +140,7 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Refresh token doesnt exists",
 		})
-		h.Logger.Error("err", err.Error(), err)
+		h.Logger.Error("err token yoq", "err: ", err)
 		return
 	}
 

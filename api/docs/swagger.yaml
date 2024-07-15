@@ -1,0 +1,145 @@
+basePath: /auth
+definitions:
+  auth.Tokens:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+    type: object
+  auth.User:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+      user_name:
+        type: string
+      user_type:
+        type: string
+    type: object
+  auth.UserLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Connecting artists and customers program
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: ReserveDesk API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: checks the user and returns tokens
+      operationId: login
+      parameters:
+      - description: User Information to log in
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns access and refresh tokens
+          schema:
+            $ref: '#/definitions/auth.Tokens'
+        "401":
+          description: if Access token fails it will returns this
+          schema:
+            type: string
+        "500":
+          description: Something went wrong in server
+          schema:
+            type: string
+      summary: Login user
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: removes refresh token gets token from header
+      operationId: logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: if Access token fails it will returns this
+          schema:
+            type: string
+        "500":
+          description: Something went wrong in server
+          schema:
+            type: string
+      summary: log outs user
+      tags:
+      - Auth
+  /auth/refreshtoken:
+    get:
+      description: generates new access token gets token from header
+      operationId: refresh
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: if Access token fails it will returns this
+          schema:
+            type: string
+        "500":
+          description: Something went wrong in server
+          schema:
+            type: string
+      summary: refreshes token
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers user
+      operationId: register
+      parameters:
+      - description: User information to create it
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/auth.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Something went wrong in server
+          schema:
+            type: string
+      summary: Register User
+      tags:
+      - Auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

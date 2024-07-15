@@ -47,3 +47,6 @@ permission:
 # Testlarni ishga tushiradi
 test:
 	@go test ./storage/postgres
+
+swager:
+	swag init -g api/api.go --output api/docs/
