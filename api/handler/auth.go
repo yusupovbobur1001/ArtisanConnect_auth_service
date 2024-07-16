@@ -1,13 +1,18 @@
 package handler
 
 import (
+	"auth_service/api/email"
 	token "auth_service/api/token"
 	pb "auth_service/genproto/auth"
+	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/exp/rand"
 )
 
 // @Summary Register User
@@ -37,7 +42,6 @@ func (h *Handler) Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, "SUCCESS")
 }
-
 
 // @Summary Login user
 // @Description checks the user and returns tokens
@@ -83,7 +87,7 @@ func (h *Handler) Login(c *gin.Context) {
 // @ID logout
 // @Accept json
 // @Produce json
-// @Success 200 
+// @Success 200
 // @Failure 401 {object} string "if Access token fails it will returns this"
 // @Failure 500 {object} string "Something went wrong in server"
 // @Router /auth/logout [post]
@@ -146,4 +150,39 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 
 	accessToken := token.GenerateAccessToken(&claims)
 	c.JSON(http.StatusOK, accessToken)
+}
+
+// Passwordrecovery godoc
+// @Summary Recover password
+// @Description Send password recovery email
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param  body  body  AuthService.PasswordRequest  true  "Password Recovery Request"
+// @Success 202 {object} map[string]interface{}
+// @Failure 400 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /passwordrecovery [post]
+func (h *Handler) Passwordrecovery(c *gin.Context) {
+	req := pb.RestoreProfile{}
+
+	err := json.NewDecoder(c.Request.Body).Decode(&req)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, err)
+		return
+	}
+
+	rand.Seed(uint64(time.Now().Unix()))
+	code := fmt.Sprintf("%06d", rand.Intn(1000000))
+
+	ctx := context.Background()
+
+	err = h.Redis.Set(ctx, req.Email, code, time.Minute*8).Err()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	email.SendCode(req.Email, code)
+	c.JSON(http.StatusAccepted, gin.H{"message": "Password recovery email sent"})
 }

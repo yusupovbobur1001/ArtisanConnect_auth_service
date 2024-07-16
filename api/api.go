@@ -33,6 +33,7 @@ func NewRouter(db *sql.DB) *gin.Engine {
 	user.POST("/login", h.Login)
 	user.POST("/logout", h.Logout)
 	user.GET("/refreshtoken", h.RefreshToken)
+	user.POST("/passwordrecovery", h.Passwordrecovery)
 
 	return router
 }

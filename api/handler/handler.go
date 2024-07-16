@@ -6,11 +6,14 @@ import (
 	"database/sql"
 	"log"
 	"log/slog"
+
+	"github.com/redis/go-redis/v9"
 )
 
 type Handler struct {
 	Auth   postgres.UserRepo
 	Logger *slog.Logger
+	Redis *redis.Client
 }
 
 func NewHadler(db *sql.DB) *Handler {
