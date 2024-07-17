@@ -50,3 +50,5 @@ test:
 
 swager:
 	swag init -g api/api.go --output api/docs/
+
+	

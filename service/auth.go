@@ -5,6 +5,7 @@ import (
 	"auth_service/storage/postgres"
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 type Handler struct {
@@ -52,9 +53,10 @@ func (h *Handler) GetAllProfil(ctx context.Context, req *pb.Filter) (*pb.UsersIn
 
 func (h *Handler) ValidateUserId(ctx context.Context, req *pb.Id) (*pb.Exists, error) {
 	exist, err := h.Auth.ValidateUserId(req)
+	fmt.Println(exist)
 	if !exist.Exist || err != nil {
 		return &pb.Exists{Exist: false}, err
 	}
-
+	fmt.Println(exist)
 	return &pb.Exists{Exist: true}, nil
 }

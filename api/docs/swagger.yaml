@@ -1,5 +1,10 @@
 basePath: /auth
 definitions:
+  auth.RestoreProfile:
+    properties:
+      email:
+        type: string
+    type: object
   auth.Tokens:
     properties:
       access_token:
@@ -41,7 +46,25 @@ info:
   title: ReserveDesk API
   version: "1.0"
 paths:
-  /auth/login:
+  /:
+    get:
+      description: generates new access token gets token from header
+      operationId: refresh
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: if Access token fails it will returns this
+          schema:
+            type: string
+        "500":
+          description: Something went wrong in server
+          schema:
+            type: string
+      summary: refreshes token
+      tags:
+      - Auth
+  /login:
     post:
       consumes:
       - application/json
@@ -72,7 +95,7 @@ paths:
       summary: Login user
       tags:
       - Auth
-  /auth/logout:
+  /logout:
     post:
       consumes:
       - application/json
@@ -82,7 +105,9 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: SUCCESS
+          schema:
+            type: string
         "401":
           description: if Access token fails it will returns this
           schema:
@@ -94,25 +119,40 @@ paths:
       summary: log outs user
       tags:
       - Auth
-  /auth/refreshtoken:
-    get:
-      description: generates new access token gets token from header
-      operationId: refresh
+  /passwordrecovery:
+    post:
+      consumes:
+      - application/json
+      description: Send password recovery email
+      parameters:
+      - description: Password Recovery Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RestoreProfile'
       produces:
       - application/json
       responses:
-        "200":
-          description: if Access token fails it will returns this
+        "202":
+          description: Accepted
           schema:
-            type: string
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
         "500":
-          description: Something went wrong in server
+          description: Internal Server Error
           schema:
-            type: string
-      summary: refreshes token
+            additionalProperties: true
+            type: object
+      summary: Recover password
       tags:
-      - Auth
-  /auth/register:
+      - auth
+  /register:
     post:
       consumes:
       - application/json
@@ -129,16 +169,18 @@ paths:
       - application/json
       responses:
         "201":
-          description: Created
+          description: SUCCESS
+          schema:
+            type: string
         "500":
-          description: Something went wrong in server
+          description: Internal Server Error
           schema:
             type: string
       summary: Register User
       tags:
       - Auth
 securityDefinitions:
-  BearerAuth:
+  ApiKeyAuth:
     in: header
     name: Authorization
     type: apiKey

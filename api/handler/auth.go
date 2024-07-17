@@ -22,9 +22,9 @@ import (
 // @Accept json
 // @Produce json
 // @Param user body auth.User true "User information to create it"
-// @Success 201
-// @Failure 500 {object} string "Something went wrong in server"
-// @Router /auth/register [post]
+// @Success 201  string   "SUCCESS"
+// @Failure 500  string    auth.Message
+// @Router /register [post]
 func (h *Handler) Register(c *gin.Context) {
 	user := &pb.User{}
 	if err := c.BindJSON(user); err != nil {
@@ -53,23 +53,28 @@ func (h *Handler) Register(c *gin.Context) {
 // @Success 200 {object} auth.Tokens  "Returns access and refresh tokens"
 // @Failure 401 {object} string "if Access token fails it will returns this"
 // @Failure 500 {object} string "Something went wrong in server"
-// @Router /auth/login [post]
+// @Router /login [post]
 func (h *Handler) Login(c *gin.Context) {
 	user := pb.UserLogin{}
 
 	if err := json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
+		fmt.Println("111111111111111111111111111111111111111111111111111111111111111111111111111")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		h.Logger.Error(err.Error())
 		return
 	}
 
+	fmt.Println(user.Email, user.Password)
+
 	resp, err := h.Auth.Login(&user)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			fmt.Println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "user does not exist"})
 			h.Logger.Error(err.Error())
 			return
 		} else {
+			fmt.Println("ccccccccccccccccccccccccccccccccccccccccccccccc")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			h.Logger.Error(err.Error())
 			return
@@ -87,10 +92,10 @@ func (h *Handler) Login(c *gin.Context) {
 // @ID logout
 // @Accept json
 // @Produce json
-// @Success 200
+// @Success 200  string  "SUCCESS"
 // @Failure 401 {object} string "if Access token fails it will returns this"
 // @Failure 500 {object} string "Something went wrong in server"
-// @Router /auth/logout [post]
+// @Router /logout [post]
 func (h *Handler) Logout(c *gin.Context) {
 	tkn := c.GetHeader("Authorization")
 
@@ -99,14 +104,14 @@ func (h *Handler) Logout(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid token",
 		})
-		h.Logger.Error("invalid token ", err.Error(), err)
+		h.Logger.Error("invalid token..... ", err.Error(), err)
 		return
 	}
 
 	err = h.Auth.Logout(&pb.Tokens{RefreshToken: tkn})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
-		h.Logger.Error(err.Error())
+		h.Logger.Error("asfd.....", "error: ", err.Error())	
 		return
 	}
 
@@ -120,7 +125,7 @@ func (h *Handler) Logout(c *gin.Context) {
 // @Produce json
 // @Success 200  {object} string "if Access token fails it will returns this
 // @Failure 500 {object} string "Something went wrong in server"
-// @Router /auth/refreshtoken [get]
+// @Router / [get]
 func (h *Handler) RefreshToken(c *gin.Context) {
 	refreshToken := c.GetHeader("Authorization")
 
@@ -158,7 +163,7 @@ func (h *Handler) RefreshToken(c *gin.Context) {
 // @Tags auth
 // @Accept  json
 // @Produce  json
-// @Param  body  body  AuthService.PasswordRequest  true  "Password Recovery Request"
+// @Param  body  body  auth.RestoreProfile  true  "Password Recovery Request"
 // @Success 202 {object} map[string]interface{}
 // @Failure 400 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}

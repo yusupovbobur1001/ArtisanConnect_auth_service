@@ -6,6 +6,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/gin-gonic/gin"
+	_ "auth_service/api/docs"
 )
 
 // @title ReserveDesk API
@@ -18,16 +19,18 @@ import (
 // @host localhost:8080
 // @BasePath /auth
 
-// @securityDefinitions.apikey BearerAuth
+// @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
 func NewRouter(db *sql.DB) *gin.Engine {
 	h := handler.NewHadler(db)
 
+
 	router := gin.Default()
 
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	
 	user := router.Group("/auth")
 	user.POST("/register", h.Register)
 	user.POST("/login", h.Login)

@@ -19,7 +19,34 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/login": {
+        "/": {
+            "get": {
+                "description": "generates new access token gets token from header",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "refreshes token",
+                "operationId": "refresh",
+                "responses": {
+                    "200": {
+                        "description": "if Access token fails it will returns this",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong in server",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
             "post": {
                 "description": "checks the user and returns tokens",
                 "consumes": [
@@ -66,7 +93,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/logout": {
+        "/logout": {
             "post": {
                 "description": "removes refresh token gets token from header",
                 "consumes": [
@@ -82,7 +109,10 @@ const docTemplate = `{
                 "operationId": "logout",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "SUCCESS",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "401": {
                         "description": "if Access token fails it will returns this",
@@ -99,34 +129,56 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/refreshtoken": {
-            "get": {
-                "description": "generates new access token gets token from header",
+        "/passwordrecovery": {
+            "post": {
+                "description": "Send password recovery email",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "auth"
                 ],
-                "summary": "refreshes token",
-                "operationId": "refresh",
-                "responses": {
-                    "200": {
-                        "description": "if Access token fails it will returns this",
+                "summary": "Recover password",
+                "parameters": [
+                    {
+                        "description": "Password Recovery Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/auth.RestoreProfile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     },
                     "500": {
-                        "description": "Something went wrong in server",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
             }
         },
-        "/auth/register": {
+        "/register": {
             "post": {
                 "description": "Registers user",
                 "consumes": [
@@ -153,10 +205,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created"
+                        "description": "SUCCESS",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "500": {
-                        "description": "Something went wrong in server",
+                        "description": "Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -166,6 +221,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "auth.RestoreProfile": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
         "auth.Tokens": {
             "type": "object",
             "properties": {
@@ -216,7 +279,7 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "BearerAuth": {
+        "ApiKeyAuth": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

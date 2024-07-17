@@ -32,9 +32,9 @@ func Load() *Config {
 	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
 	config.DB_PORT = cast.ToString(coalesce("DB_PORT", 5432))
 	config.DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))
-	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "dodi"))
-	config.DB_NAME = cast.ToString(coalesce("DB_NAME", "dodi"))
-	config.SIGNING_KEY = cast.ToString(coalesce("SIGNING_KEY", "123"))
+	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "0509"))
+	config.DB_NAME = cast.ToString(coalesce("DB_NAME", "artisanconnect_user"))
+	config.SIGNING_KEY = cast.ToString(coalesce("SIGNING_KEY", "GaRD"))
 	config.REFRESH_SIGNING_KEY = cast.ToString(coalesce("REFRESH_SIGNING_KEY", "234"))
 
 	return config

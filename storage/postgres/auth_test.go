@@ -38,7 +38,7 @@ func TestUpdate(t *testing.T) {
 
 	auth := NewUserRepo(db)
 
-	id := "cbac7e32-3de3-4379-9a6d-36b1d1f3a506"
+	id := "7808c0df-7c25-433e-83bb-af99affa62c6"
 
 	user := pb.UserUpdate{
 		UserName: "bobur",
@@ -71,17 +71,16 @@ func TestDelete(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-
 }
 
-func GetIdUser(t *testing.T) {
+func TestGetIdUser(t *testing.T) {
 	db, err := ConnectDB()
 	if err != nil {
 		panic(err)
 	}
 
 	u := NewUserRepo(db)
-	id := "cbac7e32-3de3-4379-9a6d-36b1d1f3a506"
+	id := "4d1a0425-054b-4b38-a9a2-633f58e36650"
 
 	p, err := u.GetByIdUser(&pb.Id{Id: id})
 	if err != nil {
@@ -91,7 +90,7 @@ func GetIdUser(t *testing.T) {
 	fmt.Println(p)
 }
 
-func GetAllUser(t *testing.T) {
+func TestGetAllUser(t *testing.T) {
 	db, err := ConnectDB()
 	if err != nil {
 		panic(err)

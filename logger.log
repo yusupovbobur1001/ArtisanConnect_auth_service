@@ -1,0 +1,47 @@
+{"time":"2024-07-17T20:00:46.997808137+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:00:28.9201643+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:00:38.822683977+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:00:39.707985839+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:01:35.456883454+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:01:36.123300689+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:02:02.720918718+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:04:07.483363458+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:07.429652033+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:07.519526742+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:07.648792743+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:07.774674679+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:07.948908813+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:08.123768707+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:06:38.295237223+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:09:24.088390301+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:09:24.879402339+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:10:10.090763178+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:10:11.567042906+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:15:44.465184733+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:45.481329561+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:46.323286661+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:46.804191402+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:46.97940609+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:47.141288841+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:47.318931345+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:47.494892561+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:47.644952526+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:47.800166864+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:47.96824324+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:48.135703412+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:48.282234542+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:48.450600853+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:48.649729599+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:48.850110788+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:49.006475242+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:49.183033508+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:49.380826132+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:49.530380267+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:49.686808973+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:49.857255431+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:15:50.027151681+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:16:58.671571152+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:16:59.799881607+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:17:00.186487562+05:00","level":"ERROR","msg":"failed to parse token: token contains an invalid number of segments"}
+{"time":"2024-07-17T21:25:24.349077974+05:00","level":"ERROR","msg":"sql: no rows in result set"}
+{"time":"2024-07-17T21:27:05.626202666+05:00","level":"ERROR","msg":"sql: no rows in result set"}

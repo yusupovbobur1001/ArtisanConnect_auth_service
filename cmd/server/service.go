@@ -1,28 +1,27 @@
-package main
+package server
 
 import (
 	"auth_service/config"
+	pb "auth_service/genproto/auth"
 	"auth_service/service"
 	"auth_service/storage/postgres"
 	"log"
-	"net"	
-	pb "auth_service/genproto/auth"
+	"net"
+
 	"google.golang.org/grpc"
 )
 
-
-
-func main() {
+func RunServr() {
 	db, err := postgres.ConnectDB()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 
 	cfg := config.Load()
 
-	listen, err := net.Listen("tcp", cfg.AUTH_SERVICE_PORT)
+	listen, err := net.Listen("tcp", "localhost:"+cfg.AUTH_SERVICE_PORT)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 
 	defer listen.Close()

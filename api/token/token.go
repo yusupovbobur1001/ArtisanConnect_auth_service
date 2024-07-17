@@ -24,8 +24,8 @@ func GeneratorJWT(user *model.User) *pb.Tokens {
 	claims["ext"] = time.Now().Add(time.Minute).Unix()
 	s := time.Now().Add(time.Minute).Unix()
 	cfg := config.Load()
-
-	access, err := accessToken.SignedString([]byte(cfg.REFRESH_SIGNING_KEY))
+	fmt.Println(cfg.SIGNING_KEY)
+	access, err := accessToken.SignedString([]byte(cfg.SIGNING_KEY))
 	if err != nil {
 		log.Fatalf("Access token is not generated %v", err)
 	}
@@ -37,12 +37,14 @@ func GeneratorJWT(user *model.User) *pb.Tokens {
 	refreshClaims["bio"] = user.Bio
 	refreshClaims["iat"] = time.Now().Unix()
 	refreshClaims["ext"] = time.Now().Add(time.Hour * 24 * 7).Unix()
-
-	refresh, err := refreshToken.SignedString([]byte(cfg.AUTH_SERVICE_PORT))
+	fmt.Println(cfg.REFRESH_SIGNING_KEY)
+	refresh, err := refreshToken.SignedString([]byte(cfg.REFRESH_SIGNING_KEY))
 	if err != nil {
 		log.Fatalf("Refresh token is not generated %v", err)
-	}
-
+	}	
+	fmt.Println(access)
+	fmt.Println("---------------------------")
+	fmt.Println(refresh)
 	return &pb.Tokens{
 		AccessToken:  access,
 		RefreshToken: refresh,
