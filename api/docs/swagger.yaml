@@ -1,5 +1,10 @@
 basePath: /auth
 definitions:
+  auth.Refreshtoken:
+    properties:
+      refresh_token:
+        type: string
+    type: object
   auth.RestoreProfile:
     properties:
       email:
@@ -46,24 +51,6 @@ info:
   title: ReserveDesk API
   version: "1.0"
 paths:
-  /:
-    get:
-      description: generates new access token gets token from header
-      operationId: refresh
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: if Access token fails it will returns this
-          schema:
-            type: string
-        "500":
-          description: Something went wrong in server
-          schema:
-            type: string
-      summary: refreshes token
-      tags:
-      - Auth
   /login:
     post:
       consumes:
@@ -152,6 +139,31 @@ paths:
       summary: Recover password
       tags:
       - auth
+  /refreshtoken:
+    get:
+      description: generates new access token gets token from header
+      operationId: refresh
+      parameters:
+      - description: Token
+        in: body
+        name: token
+        required: true
+        schema:
+          $ref: '#/definitions/auth.Refreshtoken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: if Access token fails it will returns this
+          schema:
+            type: string
+        "500":
+          description: Something went wrong in server
+          schema:
+            type: string
+      summary: refreshes token
+      tags:
+      - Auth
   /register:
     post:
       consumes:

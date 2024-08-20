@@ -58,7 +58,6 @@ func (h *Handler) Login(c *gin.Context) {
 	user := pb.UserLogin{}
 
 	if err := json.NewDecoder(c.Request.Body).Decode(&user); err != nil {
-		fmt.Println("111111111111111111111111111111111111111111111111111111111111111111111111111")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		h.Logger.Error(err.Error())
 		return
@@ -69,12 +68,10 @@ func (h *Handler) Login(c *gin.Context) {
 	resp, err := h.Auth.Login(&user)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq")
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "user does not exist"})
 			h.Logger.Error(err.Error())
 			return
 		} else {
-			fmt.Println("ccccccccccccccccccccccccccccccccccccccccccccccc")
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			h.Logger.Error(err.Error())
 			return
@@ -123,12 +120,13 @@ func (h *Handler) Logout(c *gin.Context) {
 // @Tags Auth
 // @ID refresh
 // @Produce json
-// @Success 200  {object} string "if Access token fails it will returns this
+// @Param token body auth.Refreshtoken true "Token"
+// @Success 200  {object} string "if Access token fails it will returns this"
 // @Failure 500 {object} string "Something went wrong in server"
-// @Router / [get]
+// @Router /refreshtoken [get]
 func (h *Handler) RefreshToken(c *gin.Context) {
 	refreshToken := c.GetHeader("Authorization")
-
+	fmt.Println("salom refreshToken")
 	claims, err := token.ExtractClaims(refreshToken, true)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

@@ -16,7 +16,7 @@ func main() {
 	}
 
 	cfg := config.Load()
-	
+
 	var wg sync.WaitGroup
 	wg.Add(1)
 

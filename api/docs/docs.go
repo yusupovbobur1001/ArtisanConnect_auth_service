@@ -19,33 +19,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/": {
-            "get": {
-                "description": "generates new access token gets token from header",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "refreshes token",
-                "operationId": "refresh",
-                "responses": {
-                    "200": {
-                        "description": "if Access token fails it will returns this",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Something went wrong in server",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "description": "checks the user and returns tokens",
@@ -178,6 +151,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/refreshtoken": {
+            "get": {
+                "description": "generates new access token gets token from header",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "refreshes token",
+                "operationId": "refresh",
+                "parameters": [
+                    {
+                        "description": "Token",
+                        "name": "token",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.Refreshtoken"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "if Access token fails it will returns this",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Something went wrong in server",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "description": "Registers user",
@@ -221,6 +232,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "auth.Refreshtoken": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
         "auth.RestoreProfile": {
             "type": "object",
             "properties": {

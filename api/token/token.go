@@ -70,7 +70,7 @@ func GenerateAccessToken(user *jwt.MapClaims) *string {
 	if err != nil {
 		log.Fatalf("Access token is not generated %v", err)
 	}
-
+	fmt.Println(access, "++++++++++")
 	return &access
 }
 

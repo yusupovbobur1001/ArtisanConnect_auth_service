@@ -29,7 +29,7 @@ func Load() *Config {
 
 	config.HTTP_PORT = cast.ToString(coalesce("HTTP_PORT", 8080))
 	config.AUTH_SERVICE_PORT = cast.ToString(coalesce("AUTH_SERVICE_PORT", 7777))
-	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "localhost"))
+	config.DB_HOST = cast.ToString(coalesce("DB_HOST", "postgres-artisan"))
 	config.DB_PORT = cast.ToString(coalesce("DB_PORT", 5432))
 	config.DB_USER = cast.ToString(coalesce("DB_USER", "postgres"))
 	config.DB_PASSWORD = cast.ToString(coalesce("DB_PASSWORD", "0509"))
